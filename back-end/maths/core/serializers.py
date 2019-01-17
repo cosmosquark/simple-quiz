@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
-
+from .models import Sitting
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,3 +36,9 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         model = User
         fields = ('token', 'username', 'first_name', 'password')
         extra_kwargs = {'first_name': {'required': True}}
+
+class SittingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Sitting
+        fields = ('user', 'quiz', 'user_choices', 'score')
