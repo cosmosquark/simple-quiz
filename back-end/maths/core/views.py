@@ -73,6 +73,7 @@ class SittingAPI(APIView):
         except ObjectDoesNotExist:
             return Response({'response': 'Invalid Quiz or User'},
                             status=status.HTTP_400_BAD_REQUEST)
+        sitting.calculate_score()
 
         serializer = SittingSerializer(sitting, data=data, partial=True)
         if not serializer.is_valid():

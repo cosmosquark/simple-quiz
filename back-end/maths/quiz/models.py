@@ -49,12 +49,24 @@ class Question(models.Model):
         return self.question_text
 
     def check_if_correct(self, guess):
-        answers = Choice.objects.filter(id=guess, question=self)
+        """
+        Check if the choices provided correspond with a correct answer
+        """
+        # assume correct initially
+        correct = True
+        answers = Choice.objects.filter(id__in=guess, question=self)
+
+        # if no answers for this question
+        if len(answers) == 0:
+            correct = False
+            return correct
+
         # i.e if one is wrong, then question is wrong.
         for answer in answers:
             if answer.is_correct is False:
-                return False
-        return True
+                correct = False
+                break
+        return correct
 
     def get_answers(self):
         return self.order_answers(Choice.objects.filter(question=self))

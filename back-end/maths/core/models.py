@@ -2,20 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import validate_comma_separated_integer_list
 from django.utils.translation import ugettext as _
-from quiz.models import Quiz, Choice
+from quiz.models import Quiz, Question, Choice
 
 class Sitting(models.Model):
     """
-    Used to store the progress of logged in users sitting a quiz.
-    Replaces the session system used by anon users.
-    Question_order is a list of integer pks of all the questions in the
-    quiz, in order.
-    Question_list is a list of integers which represent id's of
-    the unanswered questions in csv format.
-    Incorrect_questions is a list in the same format.
-    Sitting deleted when quiz finished unless quiz.exam_paper is true.
-    User_answers is a json object in which the question PK is stored
-    with the answer the user gave.
+    Model that associates a user with sitting a quiz.
     """
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -74,6 +65,18 @@ class Sitting(models.Model):
     @property
     def get_max_score(self):
         return len(self._question_ids())
+
+    def calculate_score(self):
+        """
+        Update the score from the recent submissions
+        """
+        # reset the score to 0
+        self.score = 0
+        questions = Question.objects.filter(quiz=self.quiz)
+        for question in questions:
+            correct = question.check_if_correct(self.user_choices.values_list("id"))
+            if correct is True:
+                self.score += 1
 
 
     class Meta:
