@@ -25,5 +25,6 @@ urlpatterns = [
     path('token-auth/', obtain_jwt_token),
     path('token-refresh/', refresh_jwt_token),
     path('token-verify/', verify_jwt_token),
+    path('core/', include('core.urls')),
     path('quiz/', include('quiz.urls')),
 ]
