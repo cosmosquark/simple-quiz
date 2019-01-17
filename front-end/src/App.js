@@ -92,19 +92,16 @@ class App extends Component {
         form = null;
     }
 
+
     return (
       <div className="App">
         <Nav
           logged_in={this.state.logged_in}
+          username={this.state.username}
           display_form={this.display_form}
           handle_logout={this.handle_logout}
         />
         {form}
-        <h3>
-          {this.state.logged_in
-            ? `Hello, ${this.state.username}`
-            : 'Please Log In'}
-        </h3>
       </div>
     );
   }

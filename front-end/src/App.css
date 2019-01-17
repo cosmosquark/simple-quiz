@@ -1,8 +1,19 @@
 .App {
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 input {
   display: block;
   margin: 5px 0 5px;
+}
+
+.user-info{
+  float: right;
+  margin-left: auto;
+}
+
+.title{
+  margin-left: auto;
+  font-size: 25px;
+  text-align: center;
 }
