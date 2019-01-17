@@ -57,9 +57,6 @@ class SittingAPI(APIView):
         """
         Post answers in response to a quiz, where pk is the quiz id which the user is answering
         """
-        print(dir(request))
-        print(request.data)
-        print(pk)
         if pk is None:
             return Response({'response': 'Invalid Quiz ID'}, status=status.HTTP_400_BAD_REQUEST)
 
