@@ -49,7 +49,7 @@ class SittingAPI(APIView):
         """
         if pk is None:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        sit, created = Sitting.objects.get_or_create(user=request.user, quiz=pk)
+        sit, created = Sitting.objects.get_or_create(user=request.user, quiz_id=pk)
         serializer = SittingSerializer(sit)
         return Response(serializer.data)
 
