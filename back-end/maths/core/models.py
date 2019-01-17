@@ -29,7 +29,7 @@ class Sitting(models.Model):
                             validators=[validate_comma_separated_integer_list],
                             max_length=1024)
 
-    score = models.IntegerField()
+    score = models.IntegerField(blank=True, default=0)
 
     user_choices = models.ManyToManyField(Choice,
                                   verbose_name=_("Choices"),
@@ -70,31 +70,6 @@ class Sitting(models.Model):
         else:
             return self.quiz.fail_text
 
-    def add_user_answer(self, question, guess):
-        current = json.loads(self.user_answers)
-        current[question.id] = guess
-        self.user_answers = json.dumps(current)
-        self.save()
-
-    def get_questions(self, with_answers=False):
-        question_ids = self._question_ids()
-        questions = sorted(
-            self.quiz.question_set.filter(id__in=question_ids)
-                                  .select_subclasses(),
-            key=lambda q: question_ids.index(q.id))
-
-        if with_answers:
-            user_answers = json.loads(self.user_answers)
-            for question in questions:
-                question.user_answer = user_answers[str(question.id)]
-
-        return questions
-
-    @property
-    def questions_with_user_answers(self):
-        return {
-            q: q.user_answer for q in self.get_questions(with_answers=True)
-        }
 
     @property
     def get_max_score(self):
