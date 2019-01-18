@@ -84,7 +84,7 @@ class Choice(models.Model):
                                  related_name="choices")
     choice_text = models.CharField(max_length=200,
                                    help_text=_("The answer text."),)
-    position = models.IntegerField("position"
+    position = models.IntegerField("position",
                                    help_text=_("Where is the answer located "
                                                "in the question"),)
     is_correct = models.BooleanField(blank=False, default=False)
