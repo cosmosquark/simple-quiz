@@ -65,9 +65,22 @@ TODO: the frontend is not yet able to render the quiz questions or submit choice
 The URL `localhost:8000/admin` allows you to access the administrator
 control panel for the quiz so you can customize quizzes, questions and manage users.
 
-## API doccumentation
+## Testing
+
+To run the tests on the backend, run the command
+
+`python3 manage.py example_quiz`
+
+TODO: Write more unit tests and frontend unit tests
+
+## API Documentation
+
+The backend restful endpoints.
+
+### /core/users
 
 ## TODO
 * The frontend is not yet able to render the quiz questions or submit choices yet.
 * Write more unit tests for the frontend and backend
 * Write more API tests for the backend
+* Potentially setup a versioning scheme for the backend API's
