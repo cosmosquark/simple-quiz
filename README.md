@@ -69,5 +69,5 @@ control panel for the quiz so you can customize quizzes, questions and manage us
 
 ## TODO
 * The frontend is not yet able to render the quiz questions or submit choices yet.
-* Write more unit tests for the front and backend
+* Write more unit tests for the frontend and backend
 * Write more API tests for the backend
