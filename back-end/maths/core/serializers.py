@@ -6,11 +6,11 @@ from .models import Sitting
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Handles the retrieval of a user
+    Handles the retrieval of a user and data associated with the user.
     """
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('username', 'first_name')
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
