@@ -73,14 +73,145 @@ To run the tests on the backend, run the command
 
 TODO: Write more unit tests and frontend unit tests
 
-## API Documentation
+## API Documentation by example
 
-The backend restful endpoints.
+The backend restful endpoints. If marked with "(Unprotected)", a JWT token
+is also required in the header setup like so
+
+```
+Authorization: JWT <token>
+```
+Where <token> is your JWT token obtained by `/token-auth`
+
+This token confirms with Django who is sending the request.
 
 ### /core/users
+
+POST (Unprotected):
+
+
+```
+{
+  "username": "example_user"
+  "first_name": "example_name"
+  "password": "notmyrealpassword"
+}
+```
+
+returns
+
+```
+{
+    "token": "someJWTtoken",
+    "username": "example_user",
+    "first_name": "example_name"
+}
+```
+
+### /core/quiz/<id>
+
+GET:
+
+```
+{
+    "user": user_id,
+    "quiz": <id>,
+    "user_choices": [
+        7,
+        5,
+        8,
+        3
+    ],
+    "score": 3
+}
+```
+
+POST:
+
+```
+{
+	"user_choices": [3,5,7,8]
+}
+```
+
+returns
+
+```
+{
+    "success": true,
+    "response": {
+        "user": 2,
+        "quiz": 1,
+        "user_choices": [
+            7,
+            5,
+            8,
+            3
+        ],
+        "score": 2
+    }
+}
+```
+
+### /quiz/<id>
+
+GET: returns a list of questions and choices associated with a quiz
+
+```
+[
+    {
+        "id": 1,
+        "question_text": "What is 2 + 2?",
+        "position": 1,
+        "choices": [
+            {
+                "id": 1,
+                "choice_text": "0",
+                "position": 1
+            },
+            {
+                "id": 2,
+                "choice_text": "5",
+                "position": 2
+            },
+            {
+                "id": 3,
+                "choice_text": "4",
+                "position": 3
+            }
+        ]
+    },
+]
+```
+
+### /token-auth
+
+POST (Unprotected):
+
+```
+{
+  "username": "example_user"
+  "password": "notmyrealpassword"
+}
+```
+
+Returns
+
+```
+{
+    "token": "someJWTtoken",
+    "user": {
+        "username": "example_user",
+        "first_name": "example_name"
+    }
+}
+```
+
+NB if you run `python3 manage.py example_quiz` the pre-populated quiz will be associated with the ID of 1
 
 ## TODO
 * The frontend is not yet able to render the quiz questions or submit choices yet.
 * Write more unit tests for the frontend and backend
 * Write more API tests for the backend
 * Potentially setup a versioning scheme for the backend API's
+* Containerise via docker
