@@ -10,7 +10,10 @@ class App extends Component {
     this.state = {
       displayed_form: '',
       logged_in: localStorage.getItem('token') ? true : false,
-      username: ''
+      username: '',
+      signup_errors: '',
+      login_errors: '',
+      quiz_errors: ''
     };
   }
 
@@ -57,14 +60,27 @@ class App extends Component {
       },
       body: JSON.stringify(data)
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          username: json.username
-        });
+      .then(res => {
+        console.log(res)
+        if (res.ok === true){
+          res.json().then(json => {
+            console.log(json)
+            localStorage.setItem('token', json.token);
+            this.setState({
+              logged_in: true,
+              displayed_form: '',
+              username: json.username,
+              signup_errors: ''
+            });
+          })
+        } else {
+          res.json().then(json => {
+            console.log(json)
+            this.setState({
+                signup_errors: json
+            });
+          })
+        }
       });
   };
 

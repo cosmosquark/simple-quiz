@@ -5,18 +5,27 @@ from .models import Sitting
 
 
 class UserSerializer(serializers.ModelSerializer):
-
+    """
+    Handles the retrieval of a user
+    """
     class Meta:
         model = User
         fields = ('username',)
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
+    """
+    Handles the creation of a user and the retrieval of the JWT token
+    And also the validation of a user
+    """
 
     token = serializers.SerializerMethodField()
     password = serializers.CharField(write_only=True)
 
     def get_token(self, obj):
+        """
+        Retrieves a JWT token to authenticate a user
+        """
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
@@ -25,6 +34,9 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         return token
 
     def create(self, validated_data):
+        """
+        Creates a user in the database
+        """
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
         if password is not None:
@@ -37,7 +49,11 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         fields = ('token', 'username', 'first_name', 'password')
         extra_kwargs = {'first_name': {'required': True}}
 
+
 class SittingSerializer(serializers.ModelSerializer):
+    """
+    Handles the validation and JSON of a sitting object.
+    """
 
     class Meta:
         model = Sitting
