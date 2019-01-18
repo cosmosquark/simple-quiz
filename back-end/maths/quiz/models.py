@@ -2,9 +2,10 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.utils.translation import ugettext as _
 
+
 class Quiz(models.Model):
     """
-    A Quiz is made up of questions
+    A Quiz associated with questions
     """
     title = models.CharField(
         verbose_name=_("Title"),
@@ -37,13 +38,16 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     """
-    A Question has multiple choices
+    A Question associated with multiple choices
     """
     quiz = models.ManyToManyField(Quiz,
                                   verbose_name=_("Quiz"),
                                   blank=True)
-    question_text = models.CharField(max_length=200)
-    position = models.IntegerField("position")
+    question_text = models.CharField(max_length=200,
+                                     help_text=_("The question text."),)
+    position = models.IntegerField("position",
+                                   help_text=_("Where is the question "
+                                               "in the quiz"),)
 
     def __str__(self):
         return self.question_text
@@ -73,9 +77,16 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="choices")
-    choice_text = models.CharField(max_length=200)
-    position = models.IntegerField("position")
+    """
+    A choice is associated with a question.
+    """
+    question = models.ForeignKey(Question, on_delete=models.CASCADE,
+                                 related_name="choices")
+    choice_text = models.CharField(max_length=200,
+                                   help_text=_("The answer text."),)
+    position = models.IntegerField("position"
+                                   help_text=_("Where is the answer located "
+                                               "in the question"),)
     is_correct = models.BooleanField(blank=False, default=False)
 
     def __str__(self):
